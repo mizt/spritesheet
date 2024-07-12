@@ -7,8 +7,10 @@ int main(int argc, char *argv[]) {
 	@autoreleasepool {
 
 		int num = 12;
-
-		const int MAX_TEXTURE_COUNT = 12;
+		
+		const int MAX_ROWS = 4;
+		const int MAX_COLS = 3;
+		const int MAX_TEXTURE_COUNT = MAX_ROWS*MAX_COLS;
 		const int w[2] = {1920,1920>>1};
 		const int h[2] = {1080,1080>>1};
 		const unsigned char color[MAX_TEXTURE_COUNT][3] = {
@@ -30,8 +32,8 @@ int main(int argc, char *argv[]) {
 			
 			if(num>=MAX_TEXTURE_COUNT) num = MAX_TEXTURE_COUNT;
 			
-			int rows = ((num-1)/3.0)+1;
-			int cols = std::min((int)num,3);
+			int rows = ((num-1)/(float)MAX_COLS)+1;
+			int cols = std::min((int)num,MAX_COLS);
 			
 			std::vector<unsigned char *> yuv;
 
@@ -76,8 +78,8 @@ int main(int argc, char *argv[]) {
 				unsigned char *u = yuv[t] + w[0]*h[0];
 				unsigned char *v = yuv[t] + w[0]*h[0] + w[1]*h[1];
 				
-				int ox = t/3;
-				int oy = t%3;
+				int ox = t/MAX_COLS;
+				int oy = t%MAX_COLS;
 				
 				for(int i=0; i<h[0]; i++) {
 					for(int j=0; j<w[0]; j++) {
